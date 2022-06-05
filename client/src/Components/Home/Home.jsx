@@ -49,7 +49,7 @@ const Home = () => {
                   <button className="btn btn-primary">Join Now</button>
                 </Link>
                 <Link to="/register">
-                  <button className="mx-5 btn btn-primary btnSecondary">
+                  <button className="mx-5 btn btn-primary btnSecondary" id="register">
                     Register
                   </button>
                 </Link>

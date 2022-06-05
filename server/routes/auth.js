@@ -3,16 +3,16 @@ const router = express.Router();
 const passport = require("passport");
 
 //route which redirects the user to google
-router.get("/google", passport.authenticate("google"));
+router.get("/google", passport.authenticate("google", { scope: ['profile'] }));
 
 //popup where authentication is done
 router.get(
   "/google/callback",
   passport.authenticate("google", {
-    failureRedirect: "/",
+    failureRedirect: "/jim",
   }),
   (req, res) => {
-    res.redirect("/");
+    res.redirect("/success");
     
   }
 );
