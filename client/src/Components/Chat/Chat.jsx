@@ -23,7 +23,21 @@ const Chat = () => {
         </div>
       </nav>
       <div className="chatContainer flexc">
-
+      <div className="chatBox">
+        <div className="top">
+          <h3 className="px-3 p-2 ">Room</h3>
+        </div>
+        <div className="sidebar">
+          <div className="sidebarNav pt-5">
+            <h4>Users</h4>
+          </div>
+        </div>
+        <div className="messagesBox">
+          <div className="actualBox">
+            fd
+          </div>
+        </div>
+      </div>
       </div>
     </div>
   );
