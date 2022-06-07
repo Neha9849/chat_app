@@ -4,6 +4,7 @@
   --secondary:#393E46;
   --text:#EEEEEE;
   --textSecondary:rgba(255, 255, 255, 0.592);
+  --shadow:rgba(0, 0, 0, 0.35) 0px 5px 15px;
 }
 *{
   margin:0 ;
@@ -67,6 +68,15 @@ body {
 p{
   font-size: 20px;
 }
-
-
+/* form */
+.form-control:focus{
+  box-shadow: none !important;
+  border:1px solid var(--primary) !important;
+}
+/* flex center */
+.flexc{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
 

@@ -15,11 +15,10 @@ require("./passport")(passport);
 
 const app = express();
 const httpServer = createServer(app);
-const PORT = process.env.PORT || 5000;
+const PORT = 3000;
 
 //middlewares
-app.use(express.json());
-app.use(express.urlencoded({ extented:false }));
+app.use(cors());
 app.use(session({
   secret:'mimi',
   resave: false,
@@ -31,9 +30,7 @@ app.use(session({
 ));
 app.use(passport.initialize());
 app.use(passport.session())
-app.use(cors({
-  orgin:'*'
-}))
+
 //connect db
 mongoose
   .connect(process.env.MONGO_URI, {
@@ -46,20 +43,37 @@ mongoose
   .catch((err) => console.log(err));
 
 //socket intialization
-const io= new Server(httpServer);
-//middlewares for socket
-// io.use((socket,next)=>{
-//   console.log(socket.id);
-//   next();
-// })
+const io= new Server(httpServer,{
+  cors:{
+    orgin:"*",
+    methods:["GET", "POST"]
+  }
+});
+app.use(express.json());
+app.use(express.urlencoded({ extented:false }));
 io.on('connection',(socket)=>{
   console.log('new connection made');
-  console.log(socket.rooms);
-  socket.join("room1");
-  console.log(socket.rooms);
-  socket.on("disconnect",(reason)=>{
-    console.log(`disconnected- ${reason}`)
+  //when user joins
+  socket.on('join',(data)=>{
+    const {userName,room} = data;
+    socket.emit("message",`welcome ${userName}`)
+    socket.broadcast.to(room).emit("message",`${userName} has joined the chat`)
+    socket.join(room);
+    // io.to(room).emit("users-data",{ 
+    //   room:room,
+    //   users:io.getAllUsers(room),
+    // })
+    socket.on("disconnect",(reason)=>{
+      io.to(room).emit("message",`${userName} has left`)
+      console.log(`disconnected`)
+    })
   })
+ 
+})
+//assign socket object to every req
+app.use((req,res,next)=>{
+  req.io=io;
+  next()
 })
 //routes
 app.use("/auth",require("./routes/auth"))
