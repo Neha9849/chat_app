@@ -1,7 +1,7 @@
 import React from "react";
 import "./join.css";
 import { Link } from "react-router-dom";
-import "./../Home/home.css";
+// import "./../Home/home.css";
 import { useState } from "react";
 const Join = () => {
   const [room,setRoom]=useState("");
@@ -12,13 +12,13 @@ const Join = () => {
         <div className="home">
           <div className="nav">
             <Link to="/">
-              <h3 className="px-5">
+              <h3 >
                 <i className="fa-solid fa-comment tprimary px-2"></i>
                 ChitChat
               </h3>
             </Link>
             <Link to="/join">
-              <button className="btn btn-primary btnSecondary mx-5">
+              <button className="btn btn-primary btnSecondary ">
                 Explore Rooms
               </button>
             </Link>

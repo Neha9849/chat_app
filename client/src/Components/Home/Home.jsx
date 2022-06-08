@@ -28,7 +28,7 @@ const Home = () => {
               </h3>
             </Link>
             <Link to="/join">
-              <button className="btn btn-primary btnSecondary mx-5">
+              <button className="btn btn-primary btnSecondary">
                 Join a Room
               </button>
             </Link>

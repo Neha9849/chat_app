@@ -1,36 +1,15 @@
 const express = require("express");
 const mongoose = require("mongoose");
 const path = require("path");
-const passport = require("passport");
-const session = require("express-session");
-const MongoStore = require('connect-mongo');
 const {createServer} = require('http');
 const {Server} = require('socket.io');
 const cors= require('cors');
-//load config
 require("dotenv").config();
-
-//passport config
-require("./passport")(passport);
+const messages = require('./models/messages')
 
 const app = express();
 const httpServer = createServer(app);
-const PORT = 3000;
-
-//middlewares
-app.use(cors());
-app.use(session({
-  secret:'mimi',
-  resave: false,
-  saveUninitialized: false,
-  store: MongoStore.create({
-    mongoUrl:process.env.MONGO_URI
-  })
-}
-));
-app.use(passport.initialize());
-app.use(passport.session())
-
+const PORT = 5000;
 //connect db
 mongoose
   .connect(process.env.MONGO_URI, {
@@ -42,6 +21,9 @@ mongoose
   })
   .catch((err) => console.log(err));
 
+//middlewares
+app.use(cors());
+
 //socket intialization
 const io= new Server(httpServer,{
   cors:{
@@ -51,14 +33,23 @@ const io= new Server(httpServer,{
 });
 app.use(express.json());
 app.use(express.urlencoded({ extented:false }));
+let roomValue;
 io.on('connection',(socket)=>{
   console.log('new connection made');
   //when user joins
   socket.on('join',(data)=>{
     const {userName,room} = data;
-    socket.emit("message",`welcome ${userName}`)
+    roomValue=room;
+    socket.emit("message",`welcome ${userName}!`)
     socket.broadcast.to(room).emit("message",`${userName} has joined the chat`)
     socket.join(room);
+    //get all msgs from db
+    messages.find({room},(err,data)=>{
+      if(err) return console.log(err);
+      socket.emit("getAllmsgs",data);
+
+    })
+    
     // io.to(room).emit("users-data",{ 
     //   room:room,
     //   users:io.getAllUsers(room),
@@ -68,15 +59,31 @@ io.on('connection',(socket)=>{
       console.log(`disconnected`)
     })
   })
+  //save message in db
+  socket.on('chatMessage',(data)=>{
+    console.log(data);
+    var message=new messages(data);
+    message.save((err,message)=>{
+      if(err) return console.log(err);
+    
+        if(err) return console.log(err);
+        io.to(roomValue).emit("updateMessages",message);
+    })
+   
+
+    
+
+  })
+ 
  
 })
+
 //assign socket object to every req
 app.use((req,res,next)=>{
   req.io=io;
   next()
 })
-//routes
-app.use("/auth",require("./routes/auth"))
+
 //run server
 httpServer.listen(PORT, () => {
   console.log(`server running on port ${PORT}`);

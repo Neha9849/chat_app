@@ -41,9 +41,6 @@
   color:var(--textSecondary);
   font-size:20px;
 }
-.home .left .btns{
-   
-}
 .home .right{
  padding:20px;
   display:flex;
@@ -54,17 +51,7 @@
   width:700px;
 
 }
-.home .middleInner{
-    width:100%;
-    margin:100px 0px 0px 0px;
-    display:flex;
-    justify-content:center;
-    background-color:var(--secondary);
-}
-.home .middleHeading{
-    font-size: 40px;
-    font-weight: 400;
-}
+
 .home .about{
     margin:100px 0px 0px 0px;
     width:100%;
@@ -135,4 +122,15 @@
     }
 
 }
-
+.home .middleInner{
+    width:100%;
+    min-height:500px;
+    margin:100px 0px 0px 0px;
+    display:flex;
+    justify-content:center;
+    background-color:var(--secondary);
+}
+.home .middleHeading{
+    font-size: 40px;
+    font-weight: 400;
+}
