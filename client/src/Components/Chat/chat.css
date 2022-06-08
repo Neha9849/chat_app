@@ -9,14 +9,12 @@
     width:1200px;
     max-width: 100vw;
     min-height:75vh;
-    background-color:var(--background);
     border-radius: 10px;
     border:10px solid var(--secondary);
     border-top: none !important;
 }
 .chat .chatBox .headerTop{
     background-color:var(--secondary);
-    border:2px solid var(--secondary);
     display:flex;
     align-items:center;
     justify-content:space-between;
@@ -32,7 +30,6 @@
     height: calc(80vh - 86px);
 }
 .chat .msgs{
-    height: calc(80vh - 122px);
     overflow:scroll;
 }
 .chat .form{
@@ -41,7 +38,7 @@
     border:1px solid transparent;
     display:inline;
     width:95%;
-
+    margin:5px;
 }
 .chat .form-control:focus{
     border:none !important;
@@ -63,7 +60,6 @@
     margin:10px;
     display:flex;
     justify-content:flex-start;
-    /* flex-end for current user */
 }
 .chat .current{
     margin:10px;

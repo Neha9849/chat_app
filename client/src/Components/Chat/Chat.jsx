@@ -58,12 +58,7 @@ const Chat = () => {
   const sendMsgHandler = (e) => {
     e.preventDefault();
     const msgInput = document.getElementById("msgInput");
-    let currentMessage= msgInput.value;
     socket.emit('chatMessage',{text:msgInput.value,name:data.name,room:data.room});
-    // setMessages(messages=>[...messages,<Message msg={currentMessage} user={data.name} />]);
-    // socket.on("updateMessages",(data)=>{
-    //   setMessagesArray((msgs)=>[...data]);
-    // })
     msgInput.value=""
   };
   //scroll to bottom 
@@ -134,7 +129,7 @@ const Chat = () => {
               </div>
               <div className="sendMsgForm">
                 {/* form */}
-                <form className="d-flex m-1">
+                <form className="d-flex">
                   <input
                     type="text"
                     className="form form-control d-inline"
