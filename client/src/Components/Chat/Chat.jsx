@@ -29,6 +29,13 @@ const Chat = () => {
       console.log(socket.id);
     });
     socket.emit("join", { userName: parsed.name, room: parsed.room });
+     //get all msgs for first render
+     socket.on("getAllmsgs",(data)=>{ 
+      setMessagesArray((prev)=>[...data]);
+      data.map((msg)=>{
+        setMessages(messages=>[...messages,<Message msg={msg.text} user={msg.name} key={messages.length} />]);
+      })
+    })
     //alert messages to be saved only on frontend
     socket.on("message", (message) => {
       setMessages(messages=>[...messages,<Alert msg={message} key={messages.lenth}/>])
@@ -38,13 +45,7 @@ const Chat = () => {
       setMessagesArray((prev)=>[...prev,data]);
       setMessages(messages=>[...messages,<Message msg={data.text} user={data.name} key={messages.length} />]);  
     })
-    //get all msgs for first render
-    socket.on("getAllmsgs",(data)=>{ 
-      setMessagesArray((prev)=>[...data]);
-      data.map((msg)=>{
-        setMessages(messages=>[...messages,<Message msg={msg.text} user={msg.name} key={messages.length} />]);
-      })
-    })
+   
 
     return () => socket.disconnect();
   }, [setSocket]);
