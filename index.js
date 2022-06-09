@@ -9,7 +9,7 @@ const messages = require('./models/messages')
 
 const app = express();
 const httpServer = createServer(app);
-const PORT = 5000;
+const PORT = process.env.PORT || 5000;
 //connect db
 mongoose
   .connect(process.env.MONGO_URI, {
@@ -23,6 +23,11 @@ mongoose
 
 //middlewares
 app.use(cors());
+//use static build folder
+app.use(express.static(path.join(__dirname,"./client/build")))
+app.get("*",(req,res)=>{
+  res.sendFile(path.join(__dirname,"./client/build","index.html"))
+})
 
 //socket intialization
 const io= new Server(httpServer,{
