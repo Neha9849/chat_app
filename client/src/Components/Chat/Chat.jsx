@@ -21,7 +21,9 @@ const Chat = () => {
     // console.log(parsed);
     setData(data=>({name:parsed.name,room:parsed.room}))
     //socket intialization
-    const socket = io("http://localhost:5000");
+    const socket = io();
+    //in development
+    // const socket = io("http://localhost:5000")
     setSocket(socket);
     socket.on("connect", () => {
       console.log(socket.id);
